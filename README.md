@@ -1,4 +1,4 @@
-# sample-model-container
+# sample-risk-model
 
 ## Table of Contents
 
@@ -34,6 +34,6 @@ deactivate
 To run this code using Docker container execute the following commands into project root directory
 
 ```bash
-$ docker build -t sample-model-container .
-$ docker run -p 3000:3000 -d sample-model-container
+$ docker build -t sample-risk-model .
+$ docker run -p 3000:3000 -d sample-risk-model
 ```

@@ -85,7 +85,7 @@ def payload_logging(payload_scoring, scoring_response, response_time=460):
     try:
         authenticator = IAMAuthenticator(apikey="<API_KEY>",
                                          disable_ssl_verification=True)
-        wos_client = APIClient(authenticator=authenticator)
+        wos_client = APIClient(authenticator=authenticator, service_instance_id="<SERVICE_INSTANCE_ID>")
 
         scoring_id = str(uuid.uuid4())
         records_list = []

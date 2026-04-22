@@ -1,5 +1,5 @@
-flask==3.0.3
-flask-cors==4.0.2
+fastapi==0.135.3
+fastapi[standard]==0.135.3
 scikit-learn==1.6.1
 pandas==2.3.3
 numpy==1.26.4

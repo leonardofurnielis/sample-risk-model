@@ -13,5 +13,5 @@ RUN apt update \
 
 COPY . . 
 
-CMD ["python3", "main.py"]
-# CMD ["gunicorn", "-b", "0.0.0.0:3000", "-c", "/home/vcap/app/main.py", "main:app"]
+CMD ["fastapi", "run", "main.py"]
+# CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]

@@ -1,23 +1,46 @@
 import os
-import json
+from typing import Any
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 
-from flask_cors import CORS
-from flask import Flask, request
 from utils.prediction import predict
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
-app = Flask(__name__)
-CORS(app)
+# ---------------------------------------------------------------------------
+# FastAPI app
+# ---------------------------------------------------------------------------
 
-@app.route("/")
-def index():
-    return 'Flask is running!'
+app = FastAPI()
+
+# Add FastAPI CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# ---------------------------------------------------------------------------
+# FastAPI Routes
+# ---------------------------------------------------------------------------
+
+@app.get("/")
+def index() -> dict[str, str]:
+    return {"status": "FastAPI is running!"}
 
 
-@app.route('/api/v1/predict', methods=['POST'])
-def __predict__():
-    request_data = request.get_json(force=True)
+@app.post('/api/v1/predict')
+async def __predict__(request: Request):
+    try:
+        request_data: dict[str, Any] = await request.json()
+    except Exception:
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid JSON payload.",
+        )
+    
     input_data = request_data.get('values')
 
     if input_data is None: 
@@ -25,18 +48,16 @@ def __predict__():
         input_data = input_data.get('values')
 
     if input_data is None: 
-        response = app.response_class(response=json.dumps({"error": "Invalid request syntax, `input_data` is required`"}),
-                                  status=400,
-                                  mimetype='application/json')
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid request syntax, `input_data` is required`",
+        )
+    
     else:
         predicted_values = predict(input_data)
-        response = app.response_class(response=json.dumps(predicted_values),
-                                  status=200,
-                                  mimetype='application/json')
+
         
-    return response
-
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0',
-            port=3000)
+    return JSONResponse(
+                content=predicted_values,
+                status_code=200,
+            )

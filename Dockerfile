@@ -7,6 +7,7 @@ WORKDIR /home/vcap/app
 COPY requirements.txt ./
 
 # Install system dependencies and Python packages
+RUN pip install --upgrade pip
 RUN apt update \
     && pip install --no-cache-dir -r requirements.txt
 

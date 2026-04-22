@@ -35,5 +35,5 @@ To run this code using Docker container execute the following commands into proj
 
 ```bash
 $ docker build -t sample-model-container .
-$ docker run -p 3000:3000 -d sample-model-container
+$ docker run -p 8000:8000 -d sample-model-container
 ```

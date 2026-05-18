@@ -34,6 +34,6 @@ deactivate
 To run this code using Docker container execute the following commands into project root directory
 
 ```bash
-$ docker build -t sample-risk-model .
-$ docker run -p 8000:8000 -d sample-risk-model
+$ docker build --platform linux/amd64 -t sample-risk-model .
+$ docker run -p 8000:8000 sample-risk-model
 ```
